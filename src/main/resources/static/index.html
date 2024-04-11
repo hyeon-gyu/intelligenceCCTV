@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CCTV Central Control Room</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%; /* 전체 콘텐츠 너비 */
+        }
+        .video-container {
+            flex: 3; /* 비디오 영역과 설명 영역의 비율을 설정 */
+            text-align: center;
+        }
+        #videoCanvas {
+            background-color: #000;
+            max-width: 100%;
+            height: auto;
+        }
+        .info-box {
+            flex: 1; /* 비디오 영역과 설명 영역의 비율을 설정 */
+            height: 300px; /* 상황 설명 박스의 높이 */
+            background-color: #eee;
+            margin-left: 20px;
+            padding: 10px;
+            overflow-y: auto; /* 내용이 넘칠 경우 스크롤 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .menu-bar {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="menu-bar">CCTV Central Control Room</div>
+<div class="content">
+    <div class="video-container">
+        <canvas id="videoCanvas" width="640" height="480"></canvas>
+    </div>
+    <div class="info-box">
+        <!-- 상황 설명 텍스트가 여기에 업데이트 됩니다 -->
+        <p>situation describing...</p>
+    </div>
+</div>
+<script>
+    var canvas = document.getElementById('videoCanvas');
+    var context = canvas.getContext('2d');
+
+    var socket = new WebSocket('ws://localhost:8080/frames');
+    socket.binaryType = 'blob';
+
+    socket.onmessage = function(event) {
+        var blob = event.data;
+        var img = new Image();
+        img.onload = function() {
+            context.drawImage(img, 0, 0, canvas.width, canvas.height);
+            URL.revokeObjectURL(img.src);
+        };
+        img.src = URL.createObjectURL(blob);
+    };
+</script>
+</body>
+</html>
