@@ -2,9 +2,21 @@ spring:
   application:
     name: InteligenceCCTV
   kafka:
+    bootstrap-servers: 192.168.0.38:9094
     consumer:
-      bootstrap-servers: 192.168.0.38:9094  # 현재 컴퓨터 IP와 포트
       group-id: video1
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/cctv
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
