@@ -4,7 +4,6 @@ spring:
   kafka:
     bootstrap-servers: 192.168.0.38:9094
     consumer:
-      group-id: video1
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer

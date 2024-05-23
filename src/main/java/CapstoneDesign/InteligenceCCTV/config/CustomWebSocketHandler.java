@@ -54,5 +54,19 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             }
         });
     }
+
+    public void sendDangerAlert() {
+        String alertMessage = "ALERT";
+        sessions.values().forEach(session -> {
+            try {
+                if (session.isOpen()) {
+                    session.sendMessage(new TextMessage(alertMessage));
+                }
+            } catch (IOException e) {
+                // 예외 로깅 추가
+                log.error("Error sending alert message: ", e);
+            }
+        });
+    }
 }
 

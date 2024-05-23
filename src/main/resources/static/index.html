@@ -64,7 +64,7 @@
         <canvas id="videoCanvas" width="640" height="480"></canvas>
     </div>
     <div class="info-box" id="infoBox">
-        <!-- 상황 설명 텍스트가 여기에 업데이트 됩니다 -->
+        <!-- 상황 설명 텍스트는 여기 -->
         <p>situation describing...</p>
     </div>
 </div>
@@ -79,10 +79,10 @@
 
     videoSocket.onmessage = function(event) {
         var arrayBuffer = event.data;
-        var blob = new Blob([arrayBuffer], { type: 'image/jpeg' }); // Specify the correct MIME type
+        var blob = new Blob([arrayBuffer], { type: 'image/jpeg' });
         var img = new Image();
         img.onload = function() {
-            context.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas before drawing
+            context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(img, 0, 0, canvas.width, canvas.height);
             URL.revokeObjectURL(img.src);
         };
@@ -96,7 +96,21 @@
         var p = document.createElement('p');
         p.textContent = message;
         infoBox.appendChild(p);
+
+        // "ALERT" 메시지를 수신할 때만 blinkBackground 함수 호출
+        if (message === "ALERT") {
+            blinkBackground();
+        }
     };
+
+    function blinkBackground() {
+        var colors = ["#FF0000", "#FFFFFF"];
+        var i = 0;
+        setInterval(function() {
+            document.body.style.backgroundColor = colors[i];
+            i = (i + 1) % colors.length;
+        }, 500); // 0.5초마다 색상 변경
+    }
 </script>
 </body>
 </html>
